@@ -1,0 +1,207 @@
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+    output = "/home/ubuntu/impressthemasses_mvp/app/node_modules/.prisma/client"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+// NextAuth models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String       @id @default(cuid())
+  name          String?
+  email         String       @unique
+  emailVerified DateTime?
+  image         String?
+  firstName     String?
+  lastName      String?
+  role          UserRole     @default(USER)
+  isActive      Boolean      @default(true)
+  lastLoginAt   DateTime?    @map("last_login_at")
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  accounts      Account[]
+  sessions      Session[]
+  orders        Order[]
+  adminLogs     AdminLog[]
+
+  @@map("users")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  SUPER_ADMIN
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// E-commerce models
+model Product {
+  id          String   @id @default(cuid())
+  title       String
+  description String   @db.Text
+  price       Int      // Price in cents
+  category    String   // "social_media", "presentations", "brand_kits"
+  images      String[] // Array of image URLs
+  downloadUrl String   @map("download_url")
+  featured    Boolean  @default(false)
+  active      Boolean  @default(true)
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+  orders      Order[]
+
+  @@map("products")
+}
+
+model Order {
+  id               String    @id @default(cuid())
+  customerEmail    String    @map("customer_email")
+  productId        String    @map("product_id")
+  userId           String?   @map("user_id")
+  stripeSessionId  String?   @unique @map("stripe_session_id")
+  stripePaymentId  String?   @map("stripe_payment_id")
+  amount           Int       // Amount paid in cents
+  status           String    @default("pending") // "pending", "completed", "failed", "refunded"
+  downloadToken    String?   @unique @map("download_token")
+  downloadExpiry   DateTime? @map("download_expiry")
+  downloadCount    Int       @default(0) @map("download_count")
+  maxDownloads     Int       @default(5) @map("max_downloads")
+  createdAt        DateTime  @default(now()) @map("created_at")
+  updatedAt        DateTime  @updatedAt @map("updated_at")
+
+  product Product @relation(fields: [productId], references: [id])
+  user    User?   @relation(fields: [userId], references: [id])
+
+  @@map("orders")
+}
+
+model EmailCapture {
+  id           String   @id @default(cuid())
+  email        String
+  source       String   // "lead_magnet", "checkout", "newsletter"
+  isCustomer   Boolean  @default(false) @map("is_customer")
+  metadata     Json?    // Additional data like referrer, campaign, etc.
+  createdAt    DateTime @default(now()) @map("created_at")
+
+  @@map("email_captures")
+}
+
+// Admin Models
+model AdminLog {
+  id        String     @id @default(cuid())
+  userId    String     @map("user_id")
+  action    AdminAction
+  entity    String     // "product", "user", "order", "settings", etc.
+  entityId  String?    @map("entity_id")
+  details   String?    @db.Text
+  ipAddress String?    @map("ip_address")
+  userAgent String?    @map("user_agent")
+  createdAt DateTime   @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@map("admin_logs")
+}
+
+enum AdminAction {
+  CREATE
+  UPDATE
+  DELETE
+  VIEW
+  EXPORT
+  LOGIN
+  LOGOUT
+  REFUND
+  FEATURE
+  PUBLISH
+  UNPUBLISH
+}
+
+model ContactSubmission {
+  id        String               @id @default(cuid())
+  name      String
+  email     String
+  subject   String
+  message   String               @db.Text
+  status    ContactSubmissionStatus @default(UNREAD)
+  assignedTo String?             @map("assigned_to")
+  response  String?              @db.Text
+  respondedAt DateTime?          @map("responded_at")
+  createdAt DateTime             @default(now()) @map("created_at")
+  updatedAt DateTime             @updatedAt @map("updated_at")
+
+  @@map("contact_submissions")
+}
+
+enum ContactSubmissionStatus {
+  UNREAD
+  READ
+  REPLIED
+  CLOSED
+}
+
+model FileAsset {
+  id          String    @id @default(cuid())
+  filename    String
+  originalName String   @map("original_name")
+  fileType    String    @map("file_type")
+  fileSize    Int       @map("file_size") // in bytes
+  storageKey  String    @map("storage_key") // S3 key or storage identifier
+  uploadedBy  String    @map("uploaded_by")
+  isActive    Boolean   @default(true) @map("is_active")
+  tags        String[]  // For categorization
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  @@map("file_assets")
+}
+
+model PlatformSetting {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       String   @db.Text
+  type        String   // "string", "number", "boolean", "json"
+  description String?
+  isPublic    Boolean  @default(false) @map("is_public") // If setting can be accessed by non-admin users
+  updatedBy   String?  @map("updated_by")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@map("platform_settings")
+}
