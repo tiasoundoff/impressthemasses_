@@ -1,0 +1,2 @@
+#!/bin/sh
+grep -R "from 'geist" src && echo "❌ Invalid font import detected" && exit 1

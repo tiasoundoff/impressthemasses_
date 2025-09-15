@@ -43,7 +43,7 @@ export async function requireAdmin() {
 
 export async function logAdminAction(
   userId: string, 
-  action: string, 
+  action: 'CREATE' | 'READ' | 'UPDATE' | 'DELETE', 
   entity: string, 
   entityId?: string, 
   details?: string,
@@ -53,7 +53,7 @@ export async function logAdminAction(
   await prisma.adminLog.create({
     data: {
       userId,
-      action: action as any,
+      action,
       entity,
       entityId,
       details,

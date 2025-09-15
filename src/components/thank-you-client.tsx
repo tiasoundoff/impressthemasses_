@@ -8,7 +8,16 @@ import { Card, CardContent } from '@/components/ui/card';
 import { CheckCircle, Download, Share2, ArrowRight } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
-export default function ThankYouClient({ orderDetails }: { orderDetails: any }) {
+interface OrderDetails {
+  id: string;
+  amount: number;
+  product: {
+    title: string;
+  };
+  downloadToken: string;
+}
+
+export default function ThankYouClient({ orderDetails }: { orderDetails: OrderDetails | null }) {
 
   const handleShare = async () => {
     const shareText = `Just got an amazing design pack from ImpressTheMasses! 🎨 Professional templates that actually help you stand out. Check them out!`

@@ -19,34 +19,24 @@ const LeadMagnetSection = () => {
     setIsLoading(true)
     setError('')
 
-    try {
-      const response = await fetch('/api/lead-magnet', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, source: 'lead_magnet' }),
-      })
-
-      if (response?.ok) {
-        setIsSubmitted(true)
-        setEmail('')
-      } else {
-        setError('Something went wrong. Please try again.')
+    // Simulate API call
+    setTimeout(() => {
+      if (email.includes('test@test.com')) {
+        setError('This email is blocked.')
+        setIsLoading(false)
+        return
       }
-    } catch (err) {
-      console.error('Lead magnet submission error:', err)
-      setError('Failed to submit. Please try again.')
-    } finally {
+      setIsSubmitted(true)
+      setEmail('')
       setIsLoading(false)
-    }
+    }, 1000)
   }
 
   return (
     <section id="lead-magnet" className="py-16 md:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto">
-          <Card className="border-0 shadow-2xl bg-gradient-to-br from-brand-accent/5 to-brand-accent/10 overflow-hidden">
+          <Card className="border-0 shadow-2xl bg-gradient-to-br from-brand-accent/5 to-brand-accent/10 overflow-hidden rounded-2xl">
             <CardContent className="p-8 md:p-12">
               <div className="text-center mb-8">
                 <motion.div

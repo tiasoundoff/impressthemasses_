@@ -16,7 +16,7 @@ async function getUserData(userId: string) {
   };
 }
 
-async function getUserOrders(userId: string) {
+async function getUserOrders() {
   // In a real app, you would fetch this from your database
   return [
     {
@@ -52,7 +52,7 @@ export default async function DashboardPage() {
   }
 
   const userData = await getUserData(session.user.id as string);
-  const ordersData = await getUserOrders(session.user.id as string);
+  const ordersData = await getUserOrders();
 
   return <DashboardClient user={userData} orders={ordersData} />;
 }

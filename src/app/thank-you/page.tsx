@@ -11,7 +11,7 @@ async function getOrderDetails(sessionId: string) {
   }
   // Mock data, in a real scenario you would look up the order by the session ID.
   return {
-    id: `order_${sessionId.slice(-8)`,
+    id: `order_${sessionId.slice(-8)}`,
     amount: 4999,
     product: {
       title: 'Pitch Deck Mastery',
@@ -20,8 +20,14 @@ async function getOrderDetails(sessionId: string) {
   };
 }
 
-export default async function ThankYouPage({ searchParams }: { searchParams: { [key: string]: string | string[] | undefined } }) {
-  const sessionId = searchParams?.session_id as string;
+interface ThankYouPageProps {
+  searchParams: {
+    session_id: string;
+  };
+}
+
+export default async function ThankYouPage({ searchParams }: ThankYouPageProps) {
+  const sessionId = searchParams.session_id;
   
   // Even though we use Suspense, we can pre-fetch here. 
   // The client component will receive the initial data as props.

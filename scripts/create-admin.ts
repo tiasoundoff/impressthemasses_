@@ -1,6 +1,5 @@
 
 import { PrismaClient } from '@prisma/client'
-import bcrypt from 'bcryptjs'
 
 const prisma = new PrismaClient()
 
@@ -8,7 +7,6 @@ async function main() {
   console.log('Creating admin user...')
 
   const adminEmail = 'admin@impressthemasses.com'
-  const adminPassword = 'admin123!' // You should change this
 
   // Check if admin already exists
   const existingAdmin = await prisma.user.findUnique({

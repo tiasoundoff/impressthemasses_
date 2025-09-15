@@ -36,7 +36,7 @@ export default function DashboardClient({ user, orders }: DashboardClientProps) 
   };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDate'string'('en-US', {
+    return new Date(dateString).toLocaleDateString('en-US', {
       year: 'numeric',
       month: 'long',
       day: 'numeric',

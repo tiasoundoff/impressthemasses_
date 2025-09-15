@@ -13,14 +13,7 @@ import { getProducts } from '@/lib/local/db'
 const ShopContent = () => {
   const allProducts = getProducts()
   const [searchQuery, setSearchQuery] = useState('')
-  const [selectedCategory, setSelectedCategory] = useState('all')
-
-  const categories = [
-    { id: 'all', name: 'All Packs' },
-    { id: 'social_media', name: 'Social Media' },
-    { id: 'presentations', name: 'Presentations' },
-    { id: 'brand_kits', name: 'Brand Kits' }
-  ]
+  const [selectedCategory, ] = useState('all')
 
   const filteredProducts = useMemo(() => {
     let products = allProducts

@@ -25,7 +25,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
       // Here you would typically redirect to a checkout page or call a server action
       // For this example, we'll just show a success toast
       toast({ title: 'Purchase successful!', description: `Thank you for purchasing ${product.name}.` });
-    } catch (error) {
+    } catch {
       toast({ title: 'Purchase failed', description: 'Something went wrong. Please try again.', variant: 'destructive' });
     }
   };
@@ -39,7 +39,7 @@ export default function ProductDetailClient({ product }: ProductDetailClientProp
           url: window.location.href,
         });
         toast({ title: 'Shared successfully!' });
-      } catch (error) {
+      } catch {
         toast({ title: 'Could not share', description: 'Something went wrong while trying to share.', variant: 'destructive' });
       }
     } else {

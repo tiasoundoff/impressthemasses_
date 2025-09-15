@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client');
+import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function updateImages() {
@@ -8,7 +8,7 @@ async function updateImages() {
       image: 'https://cdn.abacus.ai/images/bdb2fa26-5827-4d05-ab3e-fa6697801e16.png'
     },
     {
-      title: 'TikTok Creator Bundle', 
+      title: 'TikTok Creator Bundle',
       image: 'https://cdn.abacus.ai/images/2f2b7108-b30c-4c07-aa25-fe70625d497d.png'
     },
     {
