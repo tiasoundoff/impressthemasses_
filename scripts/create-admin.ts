@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 async function main() {
   console.log('Creating admin user...')
 
-  const adminEmail = 'admin@impressthemasses.com'
+  const adminEmail = 't.t.coop@gmail.com'
 
   // Check if admin already exists
   const existingAdmin = await prisma.user.findUnique({

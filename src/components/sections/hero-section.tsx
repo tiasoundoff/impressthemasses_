@@ -27,9 +27,9 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-accent font-bold text-heading mb-6 leading-tight">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-foreground mb-4 leading-tight">
               Design That{' '}
-              <span className="bg-gradient-to-r from-brand-magenta to-brand-magenta-600 bg-clip-text text-transparent">
+              <span className="text-pink-500">
                 Impresses
               </span>
               <br />
@@ -42,10 +42,10 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-xl md:text-2xl text-body mb-8 max-w-3xl mx-auto leading-relaxed"
+            className="text-lg md:text-xl text-muted-foreground mb-8 max-w-3xl mx-auto"
           >
             Professional digital design templates trusted by{' '}
-            <span className="font-semibold text-accent">10,000+ creators</span>{' '}
+            <span className="font-semibold text-pink-500">10,000+ creators</span>{' '}
             to build stunning brands and grow their businesses.
           </motion.p>
 
@@ -56,14 +56,14 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
           >
-            <Button size="xl" className="group" asChild>
+            <Button size="lg" className="group bg-pink-500 hover:bg-pink-600 text-white" asChild>
               <Link href="/shop">
                 Shop Packs
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
             
-            <Button size="xl" variant="outline" asChild>
+            <Button size="lg" variant="outline" asChild>
               <Link href="#lead-magnet">
                 Get Free Pack
               </Link>
@@ -75,17 +75,17 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-2xl mx-auto"
+            className="grid grid-cols-3 gap-8 max-w-4xl mx-auto"
           >
             {stats?.map?.((stat) => (
               <div key={stat?.label} className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-r from-brand-magenta to-brand-magenta-600 rounded-full mb-4">
-                  <stat.icon className="h-6 w-6 text-white" />
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-pink-500 rounded-full mb-4">
+                  <stat.icon className="h-8 w-8 text-white" />
                 </div>
-                <div className="text-3xl font-bold text-heading mb-1">
+                <div className="text-4xl font-bold text-foreground mb-1">
                   {stat?.number}
                 </div>
-                <div className="text-subtle font-medium">
+                <div className="text-muted-foreground font-medium">
                   {stat?.label}
                 </div>
               </div>

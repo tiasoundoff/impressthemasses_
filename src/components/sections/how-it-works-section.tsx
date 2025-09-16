@@ -25,7 +25,7 @@ const HowItWorksSection = () => {
   ]
 
   return (
-    <section className="py-16 md:py-24 bg-transparent text-body">
+    <section className="py-16 md:py-24 bg-transparent text-muted-foreground">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <motion.h2
@@ -33,7 +33,7 @@ const HowItWorksSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold text-heading mb-6"
+            className="text-4xl sm:text-5xl font-bold text-foreground mb-4"
           >
             How It Works
           </motion.h2>
@@ -42,13 +42,13 @@ const HowItWorksSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
-            className="text-lg text-body max-w-2xl mx-auto"
+            className="text-lg text-muted-foreground max-w-3xl mx-auto"
           >
             Get professional designs in minutes, not hours. Our streamlined process gets you from idea to impact fast.
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
           {steps?.map?.((step, index) => (
             <motion.div
               key={step?.title}
@@ -56,21 +56,21 @@ const HowItWorksSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.2 }}
               viewport={{ once: true }}
-              className="text-center group"
+              className="text-center"
             >
-              <div className="relative mb-8">
-                <div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-brand-magenta to-brand-magenta-600 rounded-2xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <step.icon className="h-10 w-10 text-white" />
+              <div className="relative inline-block mb-6">
+                <div className="inline-flex items-center justify-center w-28 h-28 bg-pink-500 rounded-2xl">
+                  <step.icon className="h-12 w-12 text-white" />
                 </div>
-                <div className="absolute -top-2 -right-2 w-8 h-8 bg-cta rounded-full flex items-center justify-center text-heading font-bold text-sm">
+                <div className="absolute -top-3 -right-3 w-9 h-9 bg-gray-900 rounded-full flex items-center justify-center text-white font-bold border-4 border-white">
                   {index + 1}
                 </div>
               </div>
               
-              <h3 className="text-2xl font-bold text-heading mb-4">
+              <h3 className="text-2xl font-bold text-foreground mb-3">
                 {step?.title}
               </h3>
-              <p className="text-subtle leading-relaxed">
+              <p className="text-muted-foreground leading-relaxed max-w-xs mx-auto">
                 {step?.description}
               </p>
             </motion.div>

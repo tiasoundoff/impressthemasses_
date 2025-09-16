@@ -3,80 +3,12 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import { ArrowRight, Star } from 'lucide-react'
+import { Star } from 'lucide-react'
 import { motion } from 'framer-motion'
-
-interface Product {
-  id: string
-  title: string
-  description: string
-  price: number
-  category: string
-  images: string[]
-  featured: boolean
-}
-
-// Mock data to replace the broken API call
-const mockFeaturedProducts: Product[] = [
-  {
-    id: '1',
-    title: 'Social Media Pro Kit',
-    description: 'A complete kit of templates for Instagram, Facebook, and Twitter.',
-    price: 4900,
-    category: 'Social Media',
-    images: ['/placeholder-1.png'],
-    featured: true,
-  },
-  {
-    id: '2',
-    title: 'Presentation Power Pack',
-    description: 'Stunning presentation templates for Keynote and PowerPoint.',
-    price: 5900,
-    category: 'Presentations',
-    images: ['/placeholder-2.png'],
-    featured: true,
-  },
-  {
-    id: '3',
-    title: 'Branding Essentials',
-    description: 'Logo templates, business cards, and brand guidelines.',
-    price: 7900,
-    category: 'Branding',
-    images: ['/placeholder-3.png'],
-    featured: true,
-  },
-    {
-    id: '4',
-    title: 'UI/UX Starter Kit',
-    description: 'A complete kit of templates for Instagram, Facebook, and Twitter.',
-    price: 4900,
-    category: 'Web Design',
-    images: ['/placeholder-4.png'],
-    featured: true,
-  },
-  {
-    id: '5',
-    title: 'Mobile App UI Kit',
-    description: 'Stunning presentation templates for Keynote and PowerPoint.',
-    price: 5900,
-    category: 'App Design',
-    images: ['/placeholder-5.png'],
-    featured: true,
-  },
-  {
-    id: '6',
-    title: 'E-commerce Toolkit',
-    description: 'Logo templates, business cards, and brand guidelines.',
-    price: 7900,
-    category: 'E-commerce',
-    images: ['/placeholder-6.png'],
-    featured: true,
-  },
-]
+import { getProducts, Product } from '@/lib/local/db';
 
 const FeaturedPacksSection = () => {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
@@ -86,7 +18,7 @@ const FeaturedPacksSection = () => {
     const fetchFeaturedProducts = () => {
       // Simulate API call
       setTimeout(() => {
-        setFeaturedProducts(mockFeaturedProducts)
+        setFeaturedProducts(getProducts().filter(p => p.featured).slice(0, 3))
         setLoading(false)
       }, 1000)
     }
@@ -96,39 +28,37 @@ const FeaturedPacksSection = () => {
 
   const formatPrice = (price: number) => {
     if (price === 0) return 'FREE'
-    return `$${(price / 100).toFixed(0)}`
+    return `$${price.toFixed(0)}`
   }
 
   if (loading) {
     return (
-        <section className="py-16 md:py-24 bg-transparent">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="text-center mb-16">
-                    <Skeleton className="h-12 w-64 mx-auto mb-6 bg-brand-neutral-light" />
-                    <Skeleton className="h-6 w-96 mx-auto bg-brand-neutral-light" />
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {[...Array(6)].map((_, i) => (
-                        <Card key={i} className="bg-white border-brand-neutral-light shadow-sm rounded-2xl">
-                            <Skeleton className="aspect-video w-full bg-brand-neutral-light" />
-                            <CardContent className="p-6">
-                                <Skeleton className="h-6 w-3/4 mb-2 bg-brand-neutral-light" />
-                                <Skeleton className="h-4 w-full mb-4 bg-brand-neutral-light" />
-                                <div className="flex items-center justify-between">
-                                    <Skeleton className="h-4 w-1/4 bg-brand-neutral-light" />
-                                    <Skeleton className="h-8 w-24 bg-brand-neutral-light" />
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
-            </div>
-        </section>
+      <section className="py-16 md:py-24 bg-transparent">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <Skeleton className="h-12 w-80 mx-auto mb-6" />
+          <Skeleton className="h-6 w-96 mx-auto mb-16" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(3)].map((_, i) => (
+              <Card key={i} className="rounded-2xl">
+                <Skeleton className="aspect-[4/3] w-full bg-gray-200 rounded-t-2xl" />
+                <CardContent className="p-6">
+                  <Skeleton className="h-6 w-3/4 mb-2" />
+                  <Skeleton className="h-4 w-full mb-4" />
+                  <div className="flex items-center justify-between">
+                    <Skeleton className="h-4 w-1/4" />
+                    <Skeleton className="h-10 w-28" />
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
     )
   }
 
   return (
-    <section className="py-16 md:py-24 bg-transparent text-brand-primary">
+    <section className="py-16 md:py-24 bg-white text-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <motion.h2
@@ -136,7 +66,7 @@ const FeaturedPacksSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold text-brand-primary mb-6"
+            className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4"
           >
             Featured Design Packs
           </motion.h2>
@@ -145,51 +75,44 @@ const FeaturedPacksSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
-            className="text-lg text-brand-primary-light max-w-2xl mx-auto mb-8"
+            className="text-lg text-gray-600 max-w-3xl mx-auto"
           >
             Our most popular design packs trusted by thousands of creators worldwide.
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
-          {featuredProducts.slice(0, 6).map((product, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {featuredProducts.map((product, index) => (
             <motion.div
               key={product.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.1 }}
               viewport={{ once: true }}
+              className='h-full'
             >
-              <Card className="group overflow-hidden bg-white border-brand-neutral-light shadow-sm hover:shadow-lg transition-all duration-300 rounded-2xl hover:-translate-y-1">
-                <div className="relative aspect-video overflow-hidden">
-                  {product.images[0] && (
-                    <Image
-                      src={product.images[0]}
-                      alt={product.title || 'Product image'}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
+              <Card className="group flex flex-col h-full overflow-hidden bg-white rounded-2xl border border-gray-200/80 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+                   <div className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-1 text-sm font-semibold text-gray-800 shadow-sm">
+                    {formatPrice(product.price)}
+                  </div>
+                  {product.featured && (
+                    <div className="absolute top-3 left-3 flex items-center space-x-1.5 bg-yellow-300 rounded-lg px-3 py-1 shadow-sm">
+                      <Star className="h-4 w-4 text-yellow-700 fill-current" />
+                      <span className="text-xs font-bold text-yellow-800">Featured</span>
+                    </div>
                   )}
-                  <div className="absolute top-4 right-4 bg-white/80 backdrop-blur-sm rounded-full px-3 py-1 text-sm font-semibold text-brand-primary">
-                    {formatPrice(product.price || 0)}
-                  </div>
-                  <div className="absolute top-4 left-4 flex items-center space-x-1 bg-brand-accent/90 backdrop-blur-sm rounded-full px-3 py-1">
-                    <Star className="h-3 w-3 text-white fill-current" />
-                    <span className="text-xs font-semibold text-white">Featured</span>
-                  </div>
                 </div>
-                <CardContent className="p-6">
-                  <h3 className="text-xl font-bold text-brand-primary mb-2 group-hover:text-brand-accent transition-colors">
-                    {product.title}
+                <CardContent className="p-6 flex flex-col flex-grow">
+                  <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-pink-600 transition-colors">
+                    {product.name}
                   </h3>
-                  <p className="text-brand-primary-light text-sm mb-4 line-clamp-2">
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-2 flex-grow">
                     {product.description}
                   </p>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-brand-primary-light/60 capitalize font-medium">
-                      {product.category.replace('_', ' ')}
-                    </span>
-                    <Button size="sm" variant="outline" asChild>
+                  <div className="flex items-center justify-between mt-auto pt-4">
+                     <span className="text-gray-500 text-sm">{product.category}</span>
+                    <Button size="sm" asChild className={'rounded-lg font-semibold text-white bg-pink-500 hover:bg-pink-600 transition-all'}>
                       <Link href={`/product/${product.id}`}>
                         View Details
                       </Link>
@@ -204,14 +127,13 @@ const FeaturedPacksSection = () => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
           viewport={{ once: true }}
-          className="text-center"
+          className="text-center mt-16"
         >
-          <Button size="xl" asChild>
+          <Button size="lg" className="rounded-xl font-semibold text-white bg-gray-900 hover:bg-gray-800 transition-all shadow-lg hover:shadow-xl'" asChild>
             <Link href="/shop">
               View All Packs
-              <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>
         </motion.div>

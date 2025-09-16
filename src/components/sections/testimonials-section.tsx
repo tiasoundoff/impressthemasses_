@@ -3,7 +3,7 @@
 
 import React from 'react'
 import { Card, CardContent } from '@/components/ui/card'
-import { Star, Quote } from 'lucide-react'
+import { Star } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 const TestimonialsSection = () => {
@@ -50,15 +50,13 @@ const TestimonialsSection = () => {
     return Array.from({ length: 5 }, (_, i) => (
       <Star
         key={i}
-        className={`h-4 w-4 ${
-          i < rating ? 'text-yellow-400 fill-current' : 'text-brand-neutral'
-        }`}
+        className={`h-5 w-5 ${i < rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
       />
     ))
   }
 
   return (
-    <section className="py-16 md:py-24 bg-brand-neutral-light/20">
+    <section className="py-16 md:py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <motion.h2
@@ -66,18 +64,16 @@ const TestimonialsSection = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="text-3xl sm:text-4xl md:text-5xl font-bold text-brand-primary mb-6"
+            className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4"
           >
-            Loved by{' '}
-            <span className="text-brand-accent">10,000+</span>{' '}
-            Creators
+            Loved by <span className="text-pink-500">10,000+</span> Creators
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
-            className="text-lg text-brand-primary-light max-w-2xl mx-auto"
+            className="text-lg text-gray-600 max-w-3xl mx-auto"
           >
             See what our community of creators, coaches, and entrepreneurs are saying about our design packs.
           </motion.p>
@@ -91,23 +87,24 @@ const TestimonialsSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: index * 0.1 }}
               viewport={{ once: true }}
+              className="flex"
             >
-              <Card className="h-full border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
-                <CardContent className="p-6">
-                  <div className="flex items-center mb-4">
-                    <Quote className="h-8 w-8 text-brand-accent/30 mr-2" />
-                    <div className="flex">{renderStars(testimonial?.rating || 5)}</div>
-                  </div>
+              <Card className="w-full rounded-2xl border border-gray-200/80 bg-white shadow-sm flex flex-col">
+                <CardContent className="p-6 flex flex-col flex-grow">
+                    <div className="flex items-start justify-between mb-4">
+                        <p className="text-8xl text-pink-200/50 font-serif leading-none -mt-4 -ml-2">&#8220;</p>
+                        <div className="flex mt-2">{renderStars(testimonial?.rating || 5)}</div>
+                    </div>
                   
-                  <blockquote className="text-brand-primary-light mb-6 leading-relaxed">
-                    "{testimonial?.content}"
+                  <blockquote className="text-gray-700 mb-6 -mt-8 flex-grow">
+                    {testimonial?.content}
                   </blockquote>
                   
-                  <div className="border-t border-brand-neutral pt-4">
-                    <div className="font-semibold text-brand-primary">
+                  <div className="border-t border-gray-200/60 pt-4">
+                    <div className="font-semibold text-gray-900">
                       {testimonial?.name}
                     </div>
-                    <div className="text-brand-primary/60 text-sm">
+                    <div className="text-gray-500 text-sm">
                       {testimonial?.role}
                     </div>
                   </div>
